@@ -120,7 +120,7 @@ module Merb
         e = exceptions.first
 
         if action_name = e.action_name
-          dispatch_action(Exceptions, action_name, e.class.status)
+          dispatch_action(::Exceptions, action_name, e.class.status)
         else
           dispatch_action(Dispatcher::DefaultException, :index, e.class.status)
         end
