@@ -1,43 +1,47 @@
-Spec::Matchers.create(:be_successful, :respond_successfully) do
-  matches do |rack|
-    @status = rack.respond_to?(:status) ? rack.status : rack
-    @inspect = describe_input(rack)
+[:be_successful, :respond_successfully].each do |type|
+  RSpec::Matchers.define(type) do
+    match do |rack|
+      @status = rack.respond_to?(:status) ? rack.status : rack
+      @inspect = describe_input(rack)
 
-    (200..207).include?(@status)
-  end
-  
-  message do |not_string, rack|
-    if @inspect.is_a?(Numeric)
-      "Expected status code#{not_string} to be successful, " \
-      "but it was #{@inspect}"
-    else
-      "Expected #{@inspect}#{not_string} " \
-      "to be successful, but it returned a #{@status}"
+      (200..207).include?(@status)
+    end
+
+    message do |not_string, rack|
+      if @inspect.is_a?(Numeric)
+        "Expected status code#{not_string} to be successful, " \
+        "but it was #{@inspect}"
+      else
+        "Expected #{@inspect}#{not_string} " \
+        "to be successful, but it returned a #{@status}"
+      end
     end
   end
 end
 
-Spec::Matchers.create(:be_missing, :be_client_error) do
-  matches do |rack|
-    @status = rack.respond_to?(:status) ? rack.status : rack
-    @inspect = describe_input(rack)
+[:be_missing, :be_client_error].each do |type|
+  RSpec::Matchers.define(type) do
+    match do |rack|
+      @status = rack.respond_to?(:status) ? rack.status : rack
+      @inspect = describe_input(rack)
 
-    (400..417).include?(@status)
-  end
-  
-  message do |not_string, rack|
-    unless @inspect.is_a?(Numeric)
-      "Expected #{@inspect}#{not_string} " \
-      "to be missing, but it returned a #{@status}"
-    else
-      "Expected #{not_string ? "not to get " : ""}a missing error code, " \
-      "but got #{@inspect}"
+      (400..417).include?(@status)
+    end
+    
+    message do |not_string, rack|
+      unless @inspect.is_a?(Numeric)
+        "Expected #{@inspect}#{not_string} " \
+        "to be missing, but it returned a #{@status}"
+      else
+        "Expected #{not_string ? "not to get " : ""}a missing error code, " \
+        "but got #{@inspect}"
+      end
     end
   end
 end
 
-Spec::Matchers.create(:have_body) do
-  matches do |rack, body|
+RSpec::Matchers.define(:have_body) do
+  match do |rack, body|
     @actual = if rack.respond_to?(:body)
       rack.body.to_s
     else
@@ -56,8 +60,8 @@ Spec::Matchers.create(:have_body) do
   end
 end
 
-Spec::Matchers.create(:have_content_type) do
-  matches do |rack, mime_symbol|
+RSpec::Matchers.define(:have_content_type) do
+  match do |rack, mime_symbol|
     content_type = rack.headers["Content-Type"].split("; ").first
     if registered_mime = Merb.available_mime_types[mime_symbol]
       registered_mime[:accepts].include?(content_type)
@@ -82,8 +86,8 @@ Spec::Matchers.create(:have_content_type) do
   end
 end
 
-Spec::Matchers.create(:redirect) do
-  matches do |rack|
+RSpec::Matchers.define(:redirect) do
+  match do |rack|
     @inspect = describe_input(rack)
     @status_code = status_code(rack)
     (300..399).include?(@status_code)
@@ -95,12 +99,12 @@ Spec::Matchers.create(:redirect) do
   end
 end
 
-Spec::Matchers.create(:redirect_to) do
+RSpec::Matchers.define(:redirect_to) do
   expected_value do |location|
     url(location) if location.is_a?(Symbol)
   end
   
-  matches do |rack, location|
+  match do |rack, location|
     @inspect = describe_input(rack)
     
     return false unless rack.headers["Location"]
