@@ -7,12 +7,22 @@
       (200..207).include?(@status)
     end
 
-    message do |not_string, rack|
+    failure_message_for_should do |rack|
       if @inspect.is_a?(Numeric)
-        "Expected status code#{not_string} to be successful, " \
+        "Expected status code to be successful, " \
         "but it was #{@inspect}"
       else
-        "Expected #{@inspect}#{not_string} " \
+        "Expected #{@inspect} " \
+        "to be successful, but it returned a #{@status}"
+      end
+    end
+
+    failure_message_for_should_not do |rack|
+      if @inspect.is_a?(Numeric)
+        "Expected status code not to be successful, " \
+        "but it was #{@inspect}"
+      else
+        "Expected #{@inspect} not " \
         "to be successful, but it returned a #{@status}"
       end
     end
@@ -28,20 +38,30 @@ end
       (400..417).include?(@status)
     end
     
-    message do |not_string, rack|
+    failure_message_for_should do |rack|
       unless @inspect.is_a?(Numeric)
-        "Expected #{@inspect}#{not_string} " \
+        "Expected #{@inspect} " \
         "to be missing, but it returned a #{@status}"
       else
-        "Expected #{not_string ? "not to get " : ""}a missing error code, " \
+        "Expected not to get a missing error code, " \
+        "but got #{@inspect}"
+      end
+    end
+
+    failure_message_for_should_not do |rack|
+      unless @inspect.is_a?(Numeric)
+        "Expected #{@inspect} not " \
+        "to be missing, but it returned a #{@status}"
+      else
+        "Expected a missing error code, " \
         "but got #{@inspect}"
       end
     end
   end
 end
 
-RSpec::Matchers.define(:have_body) do
-  match do |rack, body|
+RSpec::Matchers.define(:have_body) do |body|
+  match do |rack|
     @actual = if rack.respond_to?(:body)
       rack.body.to_s
     else
@@ -51,17 +71,17 @@ RSpec::Matchers.define(:have_body) do
     @actual == body
   end
   
-  negative_failure_message do |rack, body|
-    "Expected the response not to match:\n    #{body}\nActual response was:\n    #{@actual}" 
-  end
-  
-  failure_message do |rack, body|
+  failure_message_for_should do |rack|
     "Expected the response to match:\n    #{body}\nActual response was:\n    #{@actual}" 
+  end
+
+  failure_message_for_should_not do |rack|
+    "Expected the response not to match:\n    #{body}\nActual response was:\n    #{@actual}" 
   end
 end
 
-RSpec::Matchers.define(:have_content_type) do
-  match do |rack, mime_symbol|
+RSpec::Matchers.define(:have_content_type) do |mime_symbol|
+  match do |rack|
     content_type = rack.headers["Content-Type"].split("; ").first
     if registered_mime = Merb.available_mime_types[mime_symbol]
       registered_mime[:accepts].include?(content_type)
@@ -71,7 +91,7 @@ RSpec::Matchers.define(:have_content_type) do
     end
   end
   
-  failure_message do |rack, mime_symbol|
+  failure_message_for_should do |rack|
     if @error
       @error
     else
@@ -93,32 +113,34 @@ RSpec::Matchers.define(:redirect) do
     (300..399).include?(@status_code)
   end
   
-  message do |not_string, rack|
-    "Expected #{@inspect}#{not_string} to be a redirect, but the " \
+  failure_message_for_should do |rack|
+    "Expected #{@inspect} to be a redirect, but the " \
+    "status code was #{@status_code}"
+  end
+
+  failure_message_for_should_not do |rack|
+    "Expected #{@inspect} not to be a redirect, but the " \
     "status code was #{@status_code}"
   end
 end
 
-RSpec::Matchers.define(:redirect_to) do
-  expected_value do |location|
-    url(location) if location.is_a?(Symbol)
-  end
-  
-  match do |rack, location|
+RSpec::Matchers.define(:redirect_to) do |location|
+  match do |rack|
     @inspect = describe_input(rack)
     
     return false unless rack.headers["Location"]
     @location, @query = rack.headers["Location"].split("?")
     @status_code = status_code(rack)
+    location = url(location) if location.is_a?(Symbol)
     @status_code.in?(300..399) && @location == location
   end
   
-  negative_failure_message do |rack, location|
+  failure_message_for_should_not do |rack|
     "Expected #{@inspect} not to redirect to " \
     "<#{location}> but it did."
   end
   
-  failure_message do |rack, location|
+  failure_message_for_should do |rack|
     if !rack.status.in?(300..399)
       "Expected #{@inspect} to be a redirect, but " \
       "it returned status code #{rack.status}."
