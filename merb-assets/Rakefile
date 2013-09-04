@@ -3,7 +3,7 @@ require 'rake'
 
 # Load this library's version information
 require File.expand_path('../lib/merb-assets/version', __FILE__)
-
+__END__
 require 'spec/rake/spectask'
 Spec::Rake::SpecTask.new(:spec) do |spec|
   spec.spec_opts << '--options' << 'spec/spec.opts' if File.exists?('spec/spec.opts')
