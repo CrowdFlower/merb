@@ -42,7 +42,7 @@ module Merb
       def gems_for_template_engine(template_engine)
         gems = ''
         if template_engine != :erb
-          if template_engine.in?(:haml, :builder)
+          if template_engine.in?([:haml, :builder])
             template_engine_plugin = "merb-#{template_engine}"
           else
             template_engine_plugin = "merb_#{template_engine}"

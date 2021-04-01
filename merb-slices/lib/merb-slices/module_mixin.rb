@@ -446,7 +446,7 @@ module Merb
         self.collected_app_paths << self.file
         self.slice_paths.each do |component, path|
           if File.directory?(component_path = path.first)
-            $LOAD_PATH.unshift(component_path) if modify_load_path && component.in?(:model, :controller, :lib) && !$LOAD_PATH.include?(component_path)
+            $LOAD_PATH.unshift(component_path) if modify_load_path && component.in?([:model, :controller, :lib]) && !$LOAD_PATH.include?(component_path)
             # slice-level component load path - will be preceded by application/app/component - loaded next by Setup.load_classes
             self.collected_slice_paths << path.first / path.last if path.last
             # app-level component load path (override) path - loaded by BootLoader::LoadClasses
