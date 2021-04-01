@@ -243,7 +243,7 @@ module Kernel
     Merb.template_engine = template_engine
 
     if template_engine != :erb
-      if template_engine.in?(:haml, :builder)
+      if template_engine.in?([:haml, :builder])
         template_engine_plugin = "merb-#{template_engine}"
       else
         template_engine_plugin = "merb_#{template_engine}"
