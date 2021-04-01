@@ -19,7 +19,6 @@ Gem::Specification.new do |gem|
   gem.description = 'Merb plugin for HAML support'
   gem.summary     = 'Merb plugin that provides support for writing view template with HAML'
 
-  gem.has_rdoc = true 
   gem.require_paths = ['lib']
   gem.extra_rdoc_files = ['README', 'LICENSE', 'TODO']
   gem.files = Dir['Generators', 'Rakefile', '{lib,spec}/**/*', 'README*', 'LICENSE*', 'TODO*'] & `git ls-files -z`.split("\0")

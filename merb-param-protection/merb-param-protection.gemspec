@@ -19,7 +19,6 @@ Gem::Specification.new do |gem|
   gem.description = 'Merb plugin that helps protecting sensible parameters'
   gem.summary     = 'Merb plugin that provides params_accessible and params_protected class methods'
 
-  gem.has_rdoc = true 
   gem.require_paths = ['lib']
   gem.extra_rdoc_files = ['README', 'LICENSE', 'TODO']
   gem.files = Dir['Rakefile', '{lib,spec}/**/*', 'README*', 'LICENSE*', 'TODO*'] & `git ls-files -z`.split("\0")

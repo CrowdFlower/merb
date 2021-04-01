@@ -21,7 +21,6 @@ Gem::Specification.new do |gem|
   gem.description = 'The Merb stack'
   gem.summary     = 'The Merb stack includes the most common merb plugins plus datamapper'
 
-  gem.has_rdoc = true 
   gem.require_paths = ['lib']
   gem.extra_rdoc_files = ['README', 'LICENSE']
   gem.files = Dir['{lib,spec}/*', 'README*', 'LICENSE*'] & `git ls-files -z`.split("\0")

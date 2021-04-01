@@ -19,7 +19,6 @@ Gem::Specification.new do |gem|
   gem.description = 'Merb plugin that supports exception notification'
   gem.summary     = 'Merb plugin that provides Email and web hook exceptions for Merb.'
 
-  gem.has_rdoc = true 
   gem.require_paths = ['lib']
   gem.extra_rdoc_files = ['README.markdown', 'LICENSE', 'TODO']
   gem.files = Dir['Rakefile', '{lib,spec}/**/*', 'README*', 'LICENSE*', 'TODO*'] & `git ls-files -z`.split("\0")

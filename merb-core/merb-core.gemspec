@@ -16,7 +16,6 @@ Gem::Specification.new do |gem|
   gem.description = 'Merb. Pocket rocket web framework.'
   gem.summary     = 'Merb plugin that provides caching (page, action, fragment, object)'
 
-  gem.has_rdoc = true 
   gem.require_paths = ['lib']
   gem.extra_rdoc_files = ['README', 'LICENSE', 'TODO', 'CHANGELOG']
   gem.files = Dir[
@@ -47,20 +46,4 @@ Gem::Specification.new do |gem|
 
     # Requirements
     gem.requirements << 'Install the json gem to get faster json parsing.'
-    gem.post_install_message = %q{
-(::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::)
-
-                     (::)   U P G R A D I N G    (::)
-
-Thank you for installing merb-core 1.1.3
-
-The planned route for upgrading from merb 1.1.x to 1.2 will involve
-changes which may break existing merb apps.  Fear not, fixes for
-apps broken by 1.2 should be trivial. Please be sure to read
-http://wiki.github.com/merb/merb/release-120 for the details
-regarding usage of the upcoming 1.2 release.
-
-(::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::)
-}
-    
 end

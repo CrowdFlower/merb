@@ -19,7 +19,6 @@ Gem::Specification.new do |gem|
   gem.description = "Merb plugin that supports reusable application 'slices'."
   gem.summary     = "Merb plugin for using and creating application 'slices' which help you modularize your application."
 
-  gem.has_rdoc = true 
   gem.require_paths = ['lib']
   gem.extra_rdoc_files = ['README', 'LICENSE', 'TODO']
   gem.files = Dir['Generators', 'Rakefile', '{bin,lib,spec}/**/*', 'README*', 'LICENSE*', 'TODO*'] & `git ls-files -z`.split("\0")
