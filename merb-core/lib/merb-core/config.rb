@@ -407,6 +407,7 @@ module Merb
 
         # Parse what we have on the command line
         begin
+          argv.instance_eval('undef :to_hash')
           opts.parse!(argv)
         rescue OptionParser::InvalidOption => e
           Merb.fatal! e.message, e
